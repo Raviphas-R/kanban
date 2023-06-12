@@ -1,0 +1,51 @@
+img {
+  width: 80px;
+  height: 80px;
+  margin-top: -48px;
+}
+
+.invalid {
+  color: red;
+  margin-top: 5px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.header {
+  margin-bottom: 32px;
+  margin-top: 32px;
+}
+
+.container {
+  position: relative;
+}
+
+.card {
+  width: 350px;
+}
+
+.card__login-form {
+  background-color: #f6f8fa;
+}
+
+.form-label__forgotpassword {
+  margin-left: 140px;
+}
+
+.form-label__forgotpassword a {
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.btn {
+  width: 100%;
+}
+
+.alert-card {
+  color: #dc3545;
+  background-image: linear-gradient(#ffebe9, #ffebe9);
+  border-color: #ea868f;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
+}

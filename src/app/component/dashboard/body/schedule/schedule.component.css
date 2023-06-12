@@ -1,0 +1,87 @@
+.transparent {
+  opacity: 0;
+}
+
+.card {
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card:hover {
+  box-shadow: 0 0.125rem 0.25rem #ffb4b4;
+}
+
+.card-header {
+  color: whitesmoke;
+}
+
+.card-header div[data-status="High Priority"] {
+  background-color: #e97777;
+}
+
+.card-header div[data-status="Med Priority"] {
+  background-color: #b6e2a1;
+}
+
+.card-header div[data-status="Low Priority"] {
+  background-color: #98a8f8;
+}
+
+.card-body .card-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card-body .card-text {
+  display: block;
+  display: -webkit-box;
+  margin: 0 auto;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown .btn.dropdown-toggle {
+  border: none;
+}
+
+::ng-deep .mat-calendar-body-cell {
+  width: 80% !important;
+  height: 80% !important;
+}
+
+::ng-deep.mat-calendar-body-cell.hasEvent::after {
+  content: ".";
+  font-family: serif;
+  font-size: 32px;
+  font-weight: 900;
+  position: absolute;
+  top: 5%;
+  left: 0;
+  z-index: 2;
+}
+
+::ng-deep.mat-calendar-body-cell.hasEvent[data-priority="Low Priority"] {
+  color: rgb(30, 30, 255);
+}
+
+::ng-deep.mat-calendar-body-cell.hasEvent[data-priority="Med Priority"] {
+  color: rgb(22, 247, 22);
+}
+
+::ng-deep.mat-calendar-body-cell.hasEvent[data-priority="High Priority"] {
+  color: rgb(255, 44, 44);
+}
+
+::ng-deep.mat-calendar-body-selected {
+  background-color: #f4b183;
+}
+
+/* //////////////////////////////////////////// */

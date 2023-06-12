@@ -1,0 +1,33 @@
+<h1 mat-dialog-title class="text-decoration-underline mb-2">Task List</h1>
+<mat-dialog-content class="mat-typography">
+  <div class="card mb-3" style="max-width: 350px" *ngFor="let task of data">
+    <div class="card-header">
+      <span
+        [attr.data-status]="task.priority"
+        class="text-white px-2 py-1 rounded-pill"
+        >{{ task.priority }}</span
+      >
+    </div>
+    <div class="card-body flex-column py-2">
+      <h3 class="card-title text-black mb-0">{{ task.title }}</h3>
+      <p class="card-text">{{ task.description }}</p>
+      <button
+        class="btn btn-primary mt-2"
+        style="font-size: 0.8rem; padding: 4px 8px"
+        (click)="openTaskDialog(task)"
+      >
+        Details
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    mat-dialog-close
+    class="btn btn-primary me-2 mb-2"
+    style="font-size: 0.8rem; padding: 4px 8px"
+  >
+    Close
+  </button>
+</mat-dialog-actions>

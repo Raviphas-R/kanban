@@ -1,0 +1,52 @@
+<header class="border-bottom">
+  <div
+    class="d-flex dashboard__header align-items-center justify-content-between"
+  >
+    <div class="form-group has-search">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input
+        type="text"
+        class="form-control rounded-pill"
+        placeholder="Search"
+      />
+    </div>
+    <div class="d-flex align-items-center h-100">
+      <div class="d-flex align-items-center h-100 px-2">
+        <i class="fa-regular fa-envelope mx-2"></i>
+        <i class="fa-regular fa-bell mx-3"></i>
+      </div>
+
+      <div class="dropdown text-end">
+        <a
+          href="#"
+          class="d-block link-dark text-decoration-none dropdown-toggle"
+          id="dropdownUser1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="{{ userImage }}"
+            width="32"
+            height="32"
+            class="rounded-circle"
+          />
+        </a>
+        <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="./settings"
+              (click)="onclick('Settings')"
+              >Settings</a
+            >
+          </li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" (click)="logOut()">Sign out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

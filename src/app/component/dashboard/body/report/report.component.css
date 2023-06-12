@@ -1,0 +1,241 @@
+* {
+  cursor: default;
+}
+
+/* Scrollbar Styling */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #9c939f #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+  margin-top: 40px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9c939f;
+  border-radius: 12px;
+  border: 3px solid #ffffff;
+}
+
+.margin-bottom-16 {
+  margin-bottom: 16px;
+}
+
+.margin-top-32 {
+  margin-top: 32px;
+}
+
+.margin-right-16 {
+  margin-right: 16px;
+}
+
+h2 {
+  color: #ffb4b4;
+}
+
+table tr th {
+  background-color: #988bee;
+  color: white;
+}
+
+table tr th i:hover {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+table tr th i:hover {
+  color: #ffdeb4;
+}
+
+table tr th i.active {
+  color: #ffead2;
+}
+
+table tbody tr td {
+  padding: 0.5rem 0.5rem;
+}
+
+.status-open {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Priority badge color */
+.badge[data-priority="Low Priority"] {
+  background-color: #98a8f8;
+}
+
+.badge[data-priority="Med Priority"] {
+  background-color: #b6e2a1;
+}
+
+.badge[data-priority="High Priority"] {
+  background-color: #e97777;
+}
+/*  */
+
+.card-body[data-status="Backlog"],
+.card-body[data-status="Backlog"] h2 {
+  background-color: #988bee;
+  color: #79018c;
+}
+
+.card-body[data-status="In Progress"],
+.card-body[data-status="In Progress"] h2 {
+  background-color: #febe8c;
+  color: #e94560;
+}
+
+.card-body[data-status="Review"],
+.card-body[data-status="Review"] h2 {
+  background-color: #98a8f8;
+  color: #2d4263;
+}
+
+.card-body[data-status="Complete"],
+.card-body[data-status="Complete"] h2 {
+  background-color: #90a17d;
+  color: #1e5128;
+}
+
+.card-body[data-status="All Tasks"],
+.card-body[data-status="All Tasks"] h2 {
+  background-color: #a77979;
+  color: #472d2d;
+}
+
+/* Status badge color */
+.badge[data-status="Backlog"] {
+  background-color: #ba94d1;
+}
+
+.badge[data-status="In Progress"] {
+  background-color: #febe8c;
+}
+
+.badge[data-status="Review"] {
+  background-color: #98a8f8;
+}
+
+.badge[data-status="Complete"] {
+  background-color: #90a17d;
+}
+
+.form-select {
+  line-height: 1;
+  padding: 0.275rem 2.25rem 0.275rem 0.75rem;
+}
+
+/* ///// */
+
+/* .dashboard__table-container-xl {
+  height: 368px;
+  height: 370px;
+  overflow-y: auto;
+} */
+
+/* .dashboard__table-container {
+  height: 480px;
+  overflow-y: auto;
+} */
+
+.table {
+  overflow-y: auto;
+}
+/* .dashboard__table-container {
+  box-shadow: -6px 6px 10px rgba(0, 0, 0, 0.16);
+} */
+
+.sticky-top {
+  z-index: 1;
+}
+
+.btn__add-ticket {
+  margin-right: 16px;
+  color: white;
+  font-weight: 600;
+}
+
+.report__clear-status-btn:hover {
+  background-color: #0d6efd;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th i:hover {
+  color: #007bff;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="Backlog"]
+  .mdc-linear-progress__bar
+  .mdc-linear-progress__bar-inner {
+  border-color: #ba94d1 !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="Backlog"]
+  .mdc-linear-progress__buffer-bar {
+  background: #ba94d140 !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="In Progress"]
+  .mdc-linear-progress__bar
+  .mdc-linear-progress__bar-inner {
+  border-color: #febe8c !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="In Progress"]
+  .mdc-linear-progress__buffer-bar {
+  background: #febe8c40 !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="Review"]
+  .mdc-linear-progress__bar
+  .mdc-linear-progress__bar-inner {
+  border-color: #98a8f8 !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="Review"]
+  .mdc-linear-progress__buffer-bar {
+  background: #98a8f840 !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="Complete"]
+  .mdc-linear-progress__bar
+  .mdc-linear-progress__bar-inner {
+  border-color: #90a17d !important;
+}
+
+::ng-deep
+  .mat-mdc-progress-bar[data-status="Complete"]
+  .mdc-linear-progress__buffer-bar {
+  background: #90a17d40 !important;
+}
+
+::ng-deep .mat-mdc-progress-bar {
+  border-radius: 3px !important;
+}

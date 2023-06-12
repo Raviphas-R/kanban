@@ -1,0 +1,33 @@
+<mat-dialog-content>
+  <form #myForm="ngForm">
+    <div class="mb-3">
+      <h3 class="text-danger">Confirm Delete Task</h3>
+      <p class="mb-3">
+        Please confirm delete this task by typing
+        <strong>"{{ data.title }}"</strong> to input field.
+      </p>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        placeholder="{{ data.title }}"
+        name="title"
+        ngModel
+        #title
+      />
+    </div>
+  </form>
+  <div class="modal-footer mt-4">
+    <button
+      type="button"
+      class="btn btn-danger me-2"
+      (click)="onClick()"
+      [disabled]="!title.value"
+    >
+      Delete
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="onNoClick()">
+      Cancel
+    </button>
+  </div>
+</mat-dialog-content>

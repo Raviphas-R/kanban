@@ -1,0 +1,511 @@
+<div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div *ngIf="teams.length < 1 && !isLoading">
+  <h3>No Team Found. Please create new Team.</h3>
+  <button
+    class="btn btn-primary"
+    type="button"
+    (click)="openCreateTeamDialog()"
+  >
+    create new team
+  </button>
+</div>
+
+<div *ngIf="!isLoading && teams.length > 0" class="row mx-3 pt-2">
+  <div class="row mx-0 px-0 mb-2">
+    <div class="col-12 col-sm-6 col-md-6 d-flex align-items-center">
+      <h2 class="mb-0">{{ selectedTeam.teamName }}</h2>
+      <div class="dropdown mx-3">
+        <button
+          class="kanban__select-team-btn btn dropdown-toggle rounded-circle"
+          type="button"
+          id="dropdownAllTeam"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fa-sharp fa-solid fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu mt-1 ms-2" aria-labelledby="dropdownAllTeam">
+          <li *ngFor="let team of teams">
+            <a
+              class="dropdown-item kanban__dropdown__teamlist"
+              (click)="onTeamSelect(team, $event)"
+            >
+              <span
+                class="me-2"
+                [ngClass]="{ hidden: team.teamName !== selectedTeam.teamName }"
+                ><i class="fa-solid fa-check"></i></span
+              >{{ team.teamName }}
+            </a>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a
+              class="dropdown-item"
+              id="createTeam"
+              (click)="openCreateTeamDialog()"
+              >Create New Team</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-6 d-flex align-items-center">
+      <div class="kanban__team-member d-flex flex-row ms-sm-auto mt-sm-0 mt-3">
+        <div class="dropdown me-0" *ngIf="remainTeamMember.length >= 1">
+          <button
+            class="kanban__team-member__more-member-btn dropdown-toggle"
+            type="button"
+            id="moreUserButton"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            matTooltip="Others"
+          >
+            +{{ remainTeamMember.length }}
+          </button>
+          <ul
+            class="kanban__team-member__dropdown dropdown-menu"
+            aria-labelledby="moreUserButton"
+          >
+            <li *ngFor="let member of remainTeamMember" class="dropdown-item">
+              <img
+                src="../../../../../assets/img/{{ member.image }}"
+                alt="User image"
+                class="kanban__team-member__more-member__img"
+              />
+              {{ member.email }}
+            </li>
+          </ul>
+        </div>
+        <img
+          *ngFor="let member of showTeamMember; let i = index"
+          [ngStyle]="{ 'z-index': 3 - i }"
+          src="../../../../../assets/img/{{ member.image }}"
+          alt=""
+          class="kanban__team-member__image"
+          matTooltip="{{ member.email }}"
+        />
+
+        <div class="dropdown" (hidden.bs.dropdown)="onDropdownClose()">
+          <button
+            class="kanban__team-member__add-btn me-0"
+            matTooltip="Add Team Member"
+            type="button"
+            id="AddUserButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            +
+          </button>
+          <div
+            class="dropdown-menu kanban__team-member_add-user-form"
+            onclick="event.stopPropagation()"
+            aria-labelledby="AddUserButton"
+          >
+            <div class="d-flex flex-row">
+              <h4>Add Team Member</h4>
+              <button
+                class="kanban__team-member_add-user-form__close-btn ms-auto align-self-start"
+                (click)="closeAddUserDropDown()"
+              >
+                x
+              </button>
+            </div>
+            <div class="mb-2" *ngIf="failAddUserMsg || successAddUserMsg">
+              <p
+                class="d-inline-block"
+                [ngClass]="{
+                  'message-alert': !!failAddUserMsg,
+                  'message-success': !!successAddUserMsg
+                }"
+              >
+                {{ failAddUserMsg || successAddUserMsg }}
+              </p>
+            </div>
+            <div class="d-flex flex-row mt-3">
+              <form>
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input
+                    type="email"
+                    matInput
+                    [formControl]="emailFormControl"
+                    [errorStateMatcher]="matcher"
+                    placeholder="Ex. user@example.com"
+                  />
+                  <mat-error
+                    *ngIf="
+                      emailFormControl.hasError('pattern') &&
+                      !emailFormControl.hasError('required')
+                    "
+                  >
+                    Please enter a valid email address
+                  </mat-error>
+                  <mat-error *ngIf="emailFormControl.hasError('required')">
+                    Email is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </form>
+              <button
+                (click)="addTeamMember()"
+                class="kanban__team-member__dropdown__add-user-button rounded ms-3"
+                [disabled]="emailFormControl.invalid"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="kanban__status kanban__status-todo col-md-12 p-3 my-3">
+      <div
+        class="kanban__status__title d-flex align-items-center justify-content-between mb-3 pe-2"
+      >
+        <h3 class="m-0">Backlog</h3>
+        <div class="dropdown">
+          <button
+            class="btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i
+              class="fa-solid fa-ellipsis-vertical fa-xl"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Add Task"
+            ></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <li>
+              <a class="dropdown-item" (click)="openCreateTaskDialog('Backlog')"
+                >Add Task</a
+              >
+            </li>
+            <!-- <li><a class="dropdown-item">Delete Task</a></li> -->
+          </ul>
+        </div>
+      </div>
+      <div
+        cdkDropList
+        #backlogList="cdkDropList"
+        [cdkDropListData]="backlog"
+        [cdkDropListConnectedTo]="[inProgressList, reviewList, completeList]"
+        (cdkDropListDropped)="drop($event, 'Backlog')"
+        class="kanban__task-list__dragable-card"
+      >
+        <div
+          class="card mb-2"
+          *ngFor="let task of backlog; let i = index"
+          (click)="openTaskDialog(i, 'backlog')"
+          cdkDrag
+        >
+          <div class="card-body">
+            <h6 class="card-title" [attr.data-status]="task.priority">
+              {{ task.priority }}
+            </h6>
+            <p class="card-text">{{ task.title }}</p>
+          </div>
+          <div class="card-footer d-flex align-items-center text-muted">
+            {{ task.updatedAt ? "updated:" : "created:" }}
+            {{ task.updatedAt || task.createAt | date : "dd/LL/yy" }}
+            <div class="d-flex flex-row ms-auto">
+              <button
+                class="kanban__card-footer__more-user-btn"
+                *ngIf="task.participant.length > 2"
+                matTooltip="Others"
+              >
+                +{{ task.participant.length - 2 }}
+              </button>
+              <img
+                *ngFor="let participant of task.participant.slice(0, 2)"
+                src="../../../../../assets/img/{{ participant.image }}"
+                class="kanban__card-footer__user-image"
+                alt="User image"
+                matTooltip="{{ participant.email }}"
+              />
+            </div>
+          </div>
+          <div
+            class="dragable-card-custom-placeholder"
+            *cdkDragPlaceholder
+          ></div>
+        </div>
+      </div>
+      <div
+        class="kanban__status__addTask d-flex justify-content-center align-items-center"
+      >
+        <p class="mt-2 mb-0" (click)="openCreateTaskDialog('Backlog')">
+          Add Task <button class="kanban__status__addTask-btn">+</button>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="kanban__status kanban__status-progress col-md-12 p-3 my-3">
+      <div
+        class="kanban__status__title d-flex align-items-center justify-content-between mb-3 pe-2"
+      >
+        <h3 class="m-0">In Progress</h3>
+        <div class="dropdown">
+          <button
+            class="btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i
+              class="fa-solid fa-ellipsis-vertical fa-xl"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Add Task"
+            ></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <li>
+              <a
+                class="dropdown-item"
+                (click)="openCreateTaskDialog('In Progress')"
+                >Add Task</a
+              >
+            </li>
+            <!-- <li><a class="dropdown-item">Delete Task</a></li> -->
+          </ul>
+        </div>
+      </div>
+      <div
+        cdkDropList
+        #inProgressList="cdkDropList"
+        [cdkDropListData]="inProgress"
+        [cdkDropListConnectedTo]="[backlogList, reviewList, completeList]"
+        (cdkDropListDropped)="drop($event, 'In Progress')"
+        class="kanban__task-list__dragable-card"
+      >
+        <div
+          class="card mb-2"
+          *ngFor="let task of inProgress; let i = index"
+          (click)="openTaskDialog(i, 'inProgress')"
+          cdkDrag
+        >
+          <div class="card-body">
+            <h6 class="card-title" [attr.data-status]="task.priority">
+              {{ task.priority }}
+            </h6>
+            <p class="card-text">{{ task.title }}</p>
+          </div>
+          <div class="card-footer d-flex align-items-center text-muted">
+            {{ task.updatedAt ? "updated:" : "created:" }}
+            {{ task.updatedAt || task.createAt | date : "dd/LL/yy" }}
+            <div class="d-flex flex-row ms-auto">
+              <button
+                class="kanban__card-footer__more-user-btn"
+                *ngIf="task.participant.length > 2"
+              >
+                +{{ task.participant.length - 2 }}
+              </button>
+              <img
+                *ngFor="let participant of task.participant.slice(0, 2)"
+                src="../../../../../assets/img/{{ participant.image }}"
+                class="kanban__card-footer__user-image"
+                alt="User image"
+                matTooltip="{{ participant.email }}"
+              />
+            </div>
+          </div>
+          <div
+            class="dragable-card-custom-placeholder"
+            *cdkDragPlaceholder
+          ></div>
+        </div>
+      </div>
+      <div
+        class="kanban__status__addTask d-flex justify-content-center align-items-center"
+      >
+        <p class="mt-2 mb-0" (click)="openCreateTaskDialog('In Progress')">
+          Add Task <button class="kanban__status__addTask-btn">+</button>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="kanban__status kanban__status-review col-md-12 p-3 my-3">
+      <div
+        class="kanban__status__title d-flex align-items-center justify-content-between mb-3 pe-2"
+      >
+        <h3 class="m-0">Review</h3>
+        <div class="dropdown">
+          <button
+            class="btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i
+              class="fa-solid fa-ellipsis-vertical fa-xl"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Add Task"
+            ></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <li>
+              <a class="dropdown-item" (click)="openCreateTaskDialog('Review')"
+                >Add Task</a
+              >
+            </li>
+            <!-- <li><a class="dropdown-item">Delete Task</a></li> -->
+          </ul>
+        </div>
+      </div>
+      <div
+        cdkDropList
+        #reviewList="cdkDropList"
+        [cdkDropListData]="review"
+        [cdkDropListConnectedTo]="[backlogList, inProgressList, completeList]"
+        (cdkDropListDropped)="drop($event, 'Review')"
+        class="kanban__task-list__dragable-card"
+      >
+        <div
+          class="card mb-2"
+          *ngFor="let task of review; let i = index"
+          (click)="openTaskDialog(i, 'review')"
+          cdkDrag
+        >
+          <div class="card-body">
+            <h6 class="card-title" [attr.data-status]="task.priority">
+              {{ task.priority }}
+            </h6>
+            <p class="card-text">{{ task.title }}</p>
+          </div>
+          <div class="card-footer d-flex align-items-centertext-muted">
+            {{ task.updatedAt ? "updated:" : "created:" }}
+            {{ task.updatedAt || task.createAt | date : "dd/LL/yy" }}
+            <div class="d-flex flex-row ms-auto">
+              <button
+                class="kanban__card-footer__more-user-btn"
+                *ngIf="task.participant.length > 2"
+              >
+                +{{ task.participant.length - 2 }}
+              </button>
+              <img
+                *ngFor="let participant of task.participant.slice(0, 2)"
+                src="../../../../../assets/img/{{ participant.image }}"
+                class="kanban__card-footer__user-image"
+                alt="User image"
+                matTooltip="{{ participant.email }}"
+              />
+            </div>
+          </div>
+          <div
+            class="dragable-card-custom-placeholder"
+            *cdkDragPlaceholder
+          ></div>
+        </div>
+      </div>
+      <div
+        class="kanban__status__addTask d-flex justify-content-center align-items-center"
+      >
+        <p class="mt-2 mb-0" (click)="openCreateTaskDialog('Review')">
+          Add Task <button class="kanban__status__addTask-btn">+</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="kanban__status kanban__status-complete col-md-12 p-3 my-3">
+      <div class="d-flex align-items-center justify-content-between mb-3 pe-2">
+        <h3 class="m-0">Complete</h3>
+        <div class="dropdown">
+          <button
+            class="btn dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i
+              class="fa-solid fa-ellipsis-vertical fa-xl"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Add Task"
+            ></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <li>
+              <a
+                class="dropdown-item"
+                (click)="openCreateTaskDialog('Complete')"
+                >Add Task</a
+              >
+            </li>
+            <!-- <li><a class="dropdown-item">Delete Task</a></li> -->
+          </ul>
+        </div>
+      </div>
+      <div
+        cdkDropList
+        #completeList="cdkDropList"
+        [cdkDropListData]="complete"
+        [cdkDropListConnectedTo]="[backlogList, inProgressList, reviewList]"
+        (cdkDropListDropped)="drop($event, 'Complete')"
+        class="kanban__task-list__dragable-card"
+      >
+        <div
+          class="card mb-2"
+          *ngFor="let task of complete; let i = index"
+          (click)="openTaskDialog(i, 'complete')"
+          cdkDrag
+        >
+          <div class="card-body">
+            <h6 class="card-title" [attr.data-status]="task.priority">
+              {{ task.priority }}
+            </h6>
+            <p class="card-text">{{ task.title }}</p>
+          </div>
+          <div class="card-footer d-flex align-items-center text-muted">
+            {{ task.updatedAt ? "updated:" : "created:" }}
+            {{ task.updatedAt || task.createAt | date : "dd/LL/yy" }}
+            <div class="d-flex flex-row ms-auto">
+              <button
+                class="kanban__card-footer__more-user-btn"
+                *ngIf="task.participant.length > 2"
+              >
+                +{{ task.participant.length - 2 }}
+              </button>
+              <img
+                *ngFor="let participant of task.participant.slice(0, 2)"
+                src="../../../../../assets/img/{{ participant.image }}"
+                class="kanban__card-footer__user-image"
+                alt="User image"
+                matTooltip="{{ participant.email }}"
+              />
+            </div>
+          </div>
+          <div
+            class="dragable-card-custom-placeholder"
+            *cdkDragPlaceholder
+          ></div>
+        </div>
+      </div>
+      <div
+        class="kanban__status__addTask d-flex justify-content-center align-items-center"
+      >
+        <p class="mt-2 mb-0" (click)="openCreateTaskDialog('Complete')">
+          Add Task <button class="kanban__status__addTask-btn">+</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

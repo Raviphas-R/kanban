@@ -1,0 +1,38 @@
+* {
+  color: #555555;
+}
+
+.btn {
+  font-size: 0.8rem;
+  color: white;
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  color: #b7c4cf;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #b7c4cf;
+}
+
+::placeholder {
+  color: #b7c4cf;
+}
+
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+input:focus:-moz-placeholder {
+  color: transparent; /* FF 4-18 */
+}
+
+input:focus::-moz-placeholder {
+  color: transparent; /* FF 19+ */
+}
+
+input:focus:-ms-input-placeholder {
+  color: transparent; /* IE 10+ */
+}

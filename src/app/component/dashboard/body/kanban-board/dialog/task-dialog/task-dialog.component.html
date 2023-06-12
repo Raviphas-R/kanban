@@ -1,0 +1,154 @@
+<mat-dialog-content class="pt-0">
+  <div
+    class="d-flex justify-content-between sticky-top pt-3 pb-2"
+    style="background-color: white"
+  >
+    <h2 class="text-primary">Task Details</h2>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="onNoClick()"
+    ></button>
+  </div>
+  <!-- <p class="modal-title mb-3" [attr.data-status]="data.priority">
+    {{ data.priority }}
+  </p> -->
+  <form #myForm="ngForm">
+    <div class="mb-3">
+      <label for="priority" class="form-label">Priority:</label>
+      <select
+        class="form-select"
+        id="priority"
+        [ngModel]="data.priority"
+        [disabled]="data.disableField"
+        name="priority"
+        #priority="ngModel"
+      >
+        <option value="Low Priority">Low Priority</option>
+        <option value="Med Priority">Med Priority</option>
+        <option value="High Priority">High Priority</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label">Status:</label>
+      <select
+        class="form-select"
+        id="status"
+        [ngModel]="data.status"
+        [disabled]="data.disableField"
+        name="status"
+        #status="ngModel"
+      >
+        <option value="Backlog">Backlog</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Review">Review</option>
+        <option value="Complete">Complete</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="title" class="form-label">Title:<span>*</span></label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        [ngModel]="data.title"
+        [disabled]="data.disableField"
+        name="title"
+        required
+        #title="ngModel"
+      />
+      <div
+        class="invalid-feedback d-block"
+        *ngIf="title.invalid && title.touched"
+      >
+        Title is required.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label"
+        >Description:<span>*</span></label
+      >
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        required
+        [ngModel]="data.description"
+        [disabled]="data.disableField"
+        #desciption="ngModel"
+      ></textarea>
+    </div>
+    <div
+      class="invalid-feedback d-block"
+      *ngIf="desciption.invalid && desciption.touched"
+    >
+      Description is required.
+    </div>
+    <!-- This for reserved space for invalid message -->
+    <!-- <div
+      class="invalid-feedback d-block"
+      [ngClass]="{
+        hidden: desciption.valid || !desciption.touched
+      }"
+    >
+      Description is required.
+    </div> -->
+
+    <div class="mb-3">
+      <label for="createdAt" class="form-label">Created At:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="createdAt"
+        placeholder="Created At"
+        [ngModel]="data.createAt | date : 'medium'"
+        name="createdAt"
+        disabled
+      />
+    </div>
+    <div class="mb-3">
+      <label for="updatedAt" class="form-label">Last Updated:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="updatedAt"
+        placeholder="-"
+        [ngModel]="data.updatedAt | date : 'medium'"
+        name="updatedAt"
+        disabled
+      />
+    </div>
+  </form>
+  <div class="d-flex flex-column">
+    <p class="fw-bold mb-1">Participant:</p>
+    <div>
+      <img
+        *ngFor="let user of data.participant"
+        src="../../../../../../assets/img/{{ user.image }}"
+        alt=""
+        class="task-modal__img"
+      />
+    </div>
+  </div>
+  <div class="modal-footer mt-4" *ngIf="!data.disableField">
+    <button type="button" class="btn btn-danger me-2" (click)="onDeleteTask()">
+      Delete
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary me-2"
+      (click)="onUpdateTask()"
+      [disabled]="myForm.pristine || myForm.invalid"
+    >
+      Update
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="onNoClick()">
+      Cancel
+    </button>
+  </div>
+</mat-dialog-content>

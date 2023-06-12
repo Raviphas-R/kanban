@@ -1,0 +1,65 @@
+<div
+  class="d-flex flex-column vh-100 justify-content-center align-items-center"
+>
+  <div>
+    <a href="/">
+      <img
+        src="../../../../../assets/icons/operating-system.png"
+        alt="logo-image"
+      />
+    </a>
+  </div>
+  <div>
+    <h3 class="header">Sign in to Kanban</h3>
+  </div>
+  <div *ngIf="resError" class="card mb-3">
+    <div class="card-body alert-card">{{ resError }}</div>
+  </div>
+  <div class="card card__login-form">
+    <div class="card-body">
+      <form #logInForm="ngForm" (submit)="logIn(logInForm)">
+        <div class="mb-2">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            name="email"
+            ngModel
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label"
+            >Password<span class="form-label__forgotpassword"
+              ><a href="#">forgot password?</a></span
+            ></label
+          >
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            name="password"
+            ngModel
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!logInForm.valid"
+        >
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body text-center">
+      New to Kanban?
+      <span class="create-new-acc__span ms-2"
+        ><a routerLink="/sign-up">Create an account</a></span
+      >
+    </div>
+  </div>
+</div>

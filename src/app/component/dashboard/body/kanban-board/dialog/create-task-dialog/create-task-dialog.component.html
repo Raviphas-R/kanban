@@ -1,0 +1,139 @@
+<mat-dialog-content class="pt-0">
+  <div
+    class="d-flex justify-content-between sticky-top pt-3 pb-2"
+    style="background-color: white"
+  >
+    <h2 class="text-primary">Create Task</h2>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="onNoClick()"
+    ></button>
+  </div>
+
+  <form #myForm="ngForm">
+    <div class="mb-3">
+      <label for="priority" class="form-label">Priority:</label>
+      <select
+        class="form-select"
+        id="priority"
+        name="priority"
+        [ngModel]="priority"
+      >
+        <option value="Low Priority">Low Priority</option>
+        <option value="Med Priority">Med Priority</option>
+        <option value="High Priority">High Priority</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label">Status:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="status"
+        name="status"
+        [(ngModel)]="data.selectedStatus"
+        #status="ngModel"
+        disabled
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="title" class="form-label">Title:<span>*</span></label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        [ngModel]=""
+        name="title"
+        required
+        #title="ngModel"
+      />
+      <div
+        class="invalid-feedback d-block"
+        *ngIf="title.invalid && title.touched"
+      >
+        Title is required.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label"
+        >Description:<span>*</span></label
+      >
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        required
+        [ngModel]=""
+        #desciption="ngModel"
+      ></textarea>
+    </div>
+    <div
+      class="invalid-feedback d-block"
+      *ngIf="desciption.invalid && desciption.touched"
+    >
+      Description is required.
+    </div>
+    <div class="mb-3">
+      <label for="participant" class="form-label">Add Participant:</label>
+      <div class="mb-2" *ngIf="errorMsg">
+        <p class="d-inline-block message-alert">
+          {{ errorMsg }}
+          <button class="btn p-0" (click)="oncloseAlertMsg()">X</button>
+        </p>
+      </div>
+
+      <div class="d-flex flex-wrap mb-1">
+        <div
+          *ngFor="let email of taskParticipantEmail; let i = index"
+          class="create-task__add-participant__user-email me-2 ps-3 pe-2 rounded-pill shadow-sm mb-2"
+        >
+          {{ email }}
+          <span>{{ i === 0 ? "(me)" : "" }}</span>
+          <button
+            class="create-task__add-participant__user-email__button ms-2"
+            (click)="removeParticipant(email, i)"
+          >
+            X
+          </button>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="test@example.com"
+          id="participant"
+          name="participant"
+          [ngModel]=""
+          #participant="ngModel"
+        />
+        <button
+          class="btn btn-primary ms-3"
+          (click)="onCheckUser(participant.value)"
+          [disabled]="!participant.value"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="modal-footer mt-5">
+    <button
+      type="button"
+      class="btn btn-primary me-2"
+      [disabled]="myForm.invalid || taskParticipantId.length < 1"
+      (click)="onCreateTask()"
+    >
+      Create
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="onNoClick()">
+      Cancel
+    </button>
+  </div>
+</mat-dialog-content>

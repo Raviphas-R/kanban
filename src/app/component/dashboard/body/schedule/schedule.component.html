@@ -1,0 +1,47 @@
+<div
+  *ngIf="isLoading"
+  class="d-flex justify-content-center position-absolute start-50 mt-5"
+>
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div [ngClass]="{ transparent: isLoading }">
+  <h2>My Schedule</h2>
+  <div class="d-flex flex-row px-3 justify-content-center my-4">
+    <div class="col-10 col-md-8 col-lg-7">
+      <mat-card style="max-width: 450px" class="mx-auto shadow">
+        <mat-calendar
+          [(selected)]="selected"
+          (click)="selectedDate($event)"
+        ></mat-calendar>
+      </mat-card>
+    </div>
+    <div
+      class="taskList d-lg-flex flex-column d-none col-md-4 rounded shadow overflow-auto p-4 me-auto"
+      style="max-height: 500px; background-color: white"
+    >
+      <h3 class="mb-3 text-decoration-underline">Tasks</h3>
+      <div
+        class="card mb-3"
+        *ngFor="let task of dateTasks"
+        (click)="openTaskDialog(task)"
+      >
+        <div class="card-header">
+          <div
+            class="d-inline-block rounded-pill px-2 py-1"
+            [attr.data-status]="task.priority"
+          >
+            {{ task.priority }}
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ task.title }}</h5>
+          <p class="card-text">
+            {{ task.description }}
+          </p>
+          <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

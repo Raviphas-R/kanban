@@ -1,0 +1,50 @@
+<h1 mat-dialog-title class="text-decoration-underline">Task Details</h1>
+<mat-dialog-content>
+  <p>
+    Priority:
+    <span [attr.data-priority]="data.priority">{{ data.priority }}</span>
+  </p>
+  <p>
+    Title: <span class="text-black">{{ data.title }}</span>
+  </p>
+  <p class="mb-1">Description:</p>
+  <div class="card mb-3">
+    <div class="card-body text-black p-2" style="min-height: 96px">
+      {{ data.description }}
+    </div>
+  </div>
+  <p>
+    Team: <span class="text-black">{{ data.team.teamName }}</span>
+  </p>
+  <div class="mb-3">
+    Participant:
+
+    <img
+      src="../../../../../../assets/img/{{ participant.image }}"
+      alt="{{ participant.name }} image"
+      style="width: 28px; height: 28px; border-radius: 50%"
+      *ngFor="let participant of data.participant"
+      class="me-2 mb-2"
+    />
+  </div>
+  <p>
+    Create At:
+    <span class="text-black">{{ data.createAt | date : "medium" }}</span>
+  </p>
+  <p>
+    Update At:
+    <span class="text-black">{{
+      data.updatedAt ? (data.updatedAt | date : "medium") : "-"
+    }}</span>
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    mat-dialog-close
+    class="btn btn-primary mb-2 me-2"
+    style="font-size: 0.8rem"
+  >
+    Close
+  </button>
+</mat-dialog-actions>

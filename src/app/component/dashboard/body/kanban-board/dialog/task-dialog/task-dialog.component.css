@@ -1,0 +1,37 @@
+label span {
+  color: red;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.modal-title {
+  color: white;
+  padding: 4px 8px;
+  border-radius: calc(0.375rem - 1px);
+}
+
+.modal-title[data-status="High Priority"] {
+  background-color: #e97777;
+}
+
+.modal-title[data-status="Med Priority"] {
+  background-color: #b6e2a1;
+}
+
+.modal-title[data-status="Low Priority"] {
+  background-color: #98a8f8;
+}
+
+.btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.task-modal__img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 6px;
+}

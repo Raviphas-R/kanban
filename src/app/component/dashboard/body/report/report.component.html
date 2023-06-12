@@ -1,0 +1,179 @@
+<div class="d-flex justify-content-center mt-5" *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+<div class="row px-3" *ngIf="!isLoading">
+  <div class="col-12 col-lg-9 order-2 order-lg-1 bg-white py-3 rounded">
+    <div class="row px-3">
+      <div class="form-group d-flex flex-row align-items-center mb-3">
+        <label for="status-filter">Status filter:</label>
+        <div>
+          <select
+            id="status-filter"
+            class="form-select ms-2"
+            [(ngModel)]="selectedStatus"
+            (change)="filterStatus(selectedStatus)"
+          >
+            <option value="All Tasks">All Tasks</option>
+            <option value="Backlog">Backlog</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Review">Review</option>
+            <option value="Complete">Complete</option>
+          </select>
+        </div>
+        <label for="priority-filter" class="ms-4">Priority filter:</label>
+        <div>
+          <select
+            id="priority-filter"
+            class="form-select ms-2"
+            [(ngModel)]="selectedPriority"
+            (change)="filterPriority(selectedPriority)"
+          >
+            <option value="None">-</option>
+            <option value="Low Priority">Low Priority</option>
+            <option value="Med Priority">Med Priority</option>
+            <option value="High Priority">High Priority</option>
+          </select>
+        </div>
+        <button
+          class="report__clear-status-btn btn btn-outline-secondary btn-sm ms-4"
+          (click)="clearFilter()"
+        >
+          Clear
+        </button>
+      </div>
+      <div
+        class="shadow-sm p-0 overflow-auto"
+        [ngClass]="
+          isXL_screen
+            ? 'dashboard__table-container-xl'
+            : 'dashboard__table-container'
+        "
+      >
+        <table class="table table-hover mb-0">
+          <thead class="thead-light sticky-top">
+            <tr class="text-center">
+              <th></th>
+              <th>Title</th>
+              <th style="min-width: 90px">
+                Priority
+                <i
+                  class="fa-solid fa-arrow-down-wide-short"
+                  (click)="onSort('Priority', $event)"
+                  #sorted
+                ></i>
+              </th>
+              <th>
+                Created
+                <i
+                  class="fa-solid fa-arrow-down-wide-short"
+                  (click)="onSort('CreateAt', $event)"
+                  #sorted
+                ></i>
+              </th>
+              <th>
+                Updated
+                <i
+                  class="fa-solid fa-arrow-down-wide-short"
+                  (click)="onSort('UpdatedAt', $event)"
+                  #sorted
+                ></i>
+              </th>
+              <th>
+                Status
+                <i
+                  class="fa-solid fa-arrow-down-wide-short"
+                  (click)="onSort('Status', $event)"
+                  #sorted
+                ></i>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let task of selectedTask.slice(page * 10, (page + 1) * 10);
+                let i = index
+              "
+            >
+              <td class="text-nowrap">{{ page * 10 + i + 1 }}</td>
+              <td
+                class="text-nowrap text-left"
+                style="
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  max-width: 200px;
+                "
+              >
+                {{ task.title }}
+              </td>
+              <td class="text-center">
+                <span class="badge mx-3" [attr.data-priority]="task.priority">
+                  {{ task.priority.split(" ")[0] }}
+                </span>
+              </td>
+              <td class="text-nowrap text-center">
+                {{ task.createAt | date : "dd/MM/yy, h:mm a" }}
+              </td>
+              <td class="text-nowrap text-center">
+                {{
+                  task.updatedAt
+                    ? (task.updatedAt | date : "dd/MM/yy, h:mm a")
+                    : "-"
+                }}
+              </td>
+              <td class="text-center">
+                <span class="badge" [attr.data-status]="task.status">
+                  {{ task.status }}
+                </span>
+              </td>
+              <td class="text-nowrap">
+                <button
+                  class="btn btn-primary"
+                  style="font-size: 0.8rem; padding: 2px 8px"
+                  (click)="openTaskDialog(task)"
+                >
+                  detail
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator
+          [length]="selectedTask.length"
+          [pageIndex]="page"
+          [pageSize]="10"
+          [hidePageSize]="true"
+          aria-label="Select page"
+          (page)="handlePageEvent($event)"
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-3 order-1 order-lg-2 px-0 px-lg-3">
+    <div class="bg-white rounded">
+      <div echarts [options]="options" (chartClick)="chartClick($event)"></div>
+      <div
+        class="d-none d-lg-flex flex-column px-3"
+        *ngFor="let data of taskOverview.slice(1)"
+      >
+        <div class="d-flex flex-row mb-2">
+          <p class="mb-0">{{ data[0] }}</p>
+          <p class="mb-0 ms-auto">
+            {{ data[1] }}/{{ taskOverview[0][1] }} ({{
+              ((data[1] / taskOverview[0][1]) * 100).toFixed(2)
+            }}%)
+          </p>
+        </div>
+        <mat-progress-bar
+          class="mb-3"
+          [attr.data-status]="data[0]"
+          mode="determinate"
+          value="{{ ((data[1] / taskOverview[0][1]) * 100).toFixed(2) }}"
+        ></mat-progress-bar>
+      </div>
+    </div>
+  </div>
+</div>

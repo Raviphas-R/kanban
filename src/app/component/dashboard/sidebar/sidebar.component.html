@@ -1,0 +1,36 @@
+<div class="sidebar d-flex p-0 vh-100 flex-column align-items-center">
+  <div
+    class="sidebar__logo d-flex align-items-center justify-content-center mb-4"
+  >
+    <p>Kanban</p>
+  </div>
+
+  <!-- <div class="sidebar__icons" (click)="onclick($event)" routerLink="./my-tasks">
+    <i class="fa-solid fa-list-check"></i>
+    <p>My Tasks</p>
+  </div> -->
+  <div
+    class="sidebar__icons active"
+    (click)="onclick($event)"
+    routerLink="./kanban-board"
+  >
+    <i class="fa-solid fa-table-columns"></i>
+    <p>Boards</p>
+  </div>
+  <div class="sidebar__icons" (click)="onclick($event)" routerLink="./schedule">
+    <i class="fa-solid fa-calendar"></i>
+    <p>Schedule</p>
+  </div>
+  <div class="sidebar__icons" (click)="onclick($event)" routerLink="./report">
+    <i class="fa-solid fa-chart-pie"></i>
+    <p>Report</p>
+  </div>
+  <div
+    class="sidebar__icons mt-auto mb-4"
+    (click)="onclick($event)"
+    routerLink="./settings"
+  >
+    <i class="fa-solid fa-gear"></i>
+    <p>Settings</p>
+  </div>
+</div>

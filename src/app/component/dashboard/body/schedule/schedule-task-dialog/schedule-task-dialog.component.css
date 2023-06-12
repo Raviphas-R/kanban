@@ -1,0 +1,15 @@
+span[data-priority="High Priority"] {
+  color: red;
+}
+
+span[data-priority="Med Priority"] {
+  color: green;
+}
+
+span[data-priority="Low Priority"] {
+  color: blue;
+}
+
+.text-black {
+  color: #222222;
+}

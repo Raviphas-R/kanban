@@ -1,0 +1,96 @@
+<div
+  class="d-flex flex-column vh-100 justify-content-center align-items-center"
+>
+  <div>
+    <a href="/">
+      <img
+        src="../../../../../assets/icons/operating-system.png"
+        alt="logo-image"
+      />
+    </a>
+  </div>
+  <div>
+    <h3 class="header">Sign up to Kanban</h3>
+  </div>
+  <div *ngIf="resError" class="card mb-3">
+    <div class="card-body alert-card">{{ resError }}</div>
+  </div>
+  <div class="card card__signup-form">
+    <div class="card-body">
+      <form #signUpForm="ngForm" (submit)="signUp(signUpForm)">
+        <div class="mb-2">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            class="form-control"
+            name="name"
+            ngModel
+            required
+          />
+        </div>
+        <div class="mb-2">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            name="email"
+            ngModel
+            required
+          />
+        </div>
+        <!-- <div
+              class="invalid"
+              [ngClass]="
+                signUpForm.controls['email'] &&
+                signUpForm.controls['email'].invalid &&
+                (signUpForm.controls['email'].dirty ||
+                  signUpForm.controls['email'].touched)
+                  ? 'visible'
+                  : 'hidden'
+              "
+            >
+              Email is required.
+            </div> -->
+        <div class="mb-2">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            class="form-control"
+            name="password"
+            ngModel
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="passwordConfirm" class="form-label"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="passwordConfirm"
+            class="form-control"
+            name="passwordConfirm"
+            ngModel
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!signUpForm.valid"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+  <p class="mt-4">
+    Already have an account? <span><a routerLink="/sign-in">sign-in</a></span>
+  </p>
+</div>
